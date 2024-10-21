@@ -1,24 +1,25 @@
 public class FizzBuzz
 {
- public void CountTo(int lastNumber)
- {
-        for (int actualNumber = 1; actualNumber <= lastNumber; actualNumber++)
+    public void CountTo(int lastNumber)
+    {
+        for (int currentNumber = 1; currentNumber <= lastNumber; currentNumber++)
         {
-            if (actualNumber % 3 == 0 && actualNumber % 5 == 0)
+            if (currentNumber % 3 == 0 && currentNumber % 5 == 0)
             {
                 Console.WriteLine("FizzBuzz");
+                continue;
             }
-            else if (actualNumber % 3 == 0)
+            if (currentNumber % 3 == 0)
             {
                 Console.WriteLine("Fizz");
+                continue;
             }
-            else if (actualNumber % 5 == 0)
+            if (currentNumber % 5 == 0)
             {
                 Console.WriteLine("Buzz");
+                continue;
             }
-            else
-            Console.WriteLine(actualNumber);
+            Console.WriteLine(currentNumber);
         }
- }
-
+    }
 }
