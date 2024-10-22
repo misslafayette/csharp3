@@ -12,7 +12,17 @@ public class ToDoItemsController : ControllerBase
     [HttpPost]
     public IActionResult Create(ToDoItemCreateRequestDto request)
     {
-        return Ok();
+        var item = ToDoItemCreateRequestDto.ToDomain();
+        try
+        {
+            item.ToDoItemId = items.Count == 0 ? 1 : items.Max(o => o.ToDoItemId) + 1;
+            items.Add(item);
+        }
+        catch (Exception ex)
+        {
+            return Problem(ex.Message, null, StatusCodes.Status500InternalServerError); //500
+        }
+        return Created();
     }
 
     [HttpGet]
@@ -30,19 +40,19 @@ public class ToDoItemsController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("{toDoItemId: int}")]
+    [HttpGet("{toDoItemId:int}")]
     public IActionResult ReadById(int toDoItemId)
     {
         return Ok();
     }
 
-    [HttpPut("{toDoItemId: int}")]
+    [HttpPut("{toDoItemId:int}")]
     public IActionResult UpdateById(int toDoItemId, [FromBody] ToDoItemUpadeRequestDto request)
     {
         return Ok();
     }
 
-    [HttpDelete("{toDoItemId: int}")]
+    [HttpDelete("{toDoItemId:int}")]
     public IActionResult DeleteById(int toDoItemId)
     {
         return Ok();
