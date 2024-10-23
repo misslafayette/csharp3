@@ -2,12 +2,19 @@ namespace ToDoList.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
+using ToDoList.Persistence;
 
 [ApiController]
 [Route("api/[controller]")]
 public class ToDoItemsController : ControllerBase
 {
     public static readonly List<ToDoItem> items = [];
+
+    private readonly ToDoItemsContext context;
+    public ToDoItemsController(ToDoItemsContext context)
+    {
+        this.context = context;
+    }
 
     [HttpPost]
     public ActionResult<ToDoItemGetResponseDto> Create(ToDoItemCreateRequestDto request)
@@ -18,9 +25,12 @@ public class ToDoItemsController : ControllerBase
         //try to create an item
         try
         {
-            item.ToDoItemId = items.Count == 0 ? 1 : items.Max(o => o.ToDoItemId) + 1;
-            items.Add(item);
+            // item.ToDoItemId = items.Count == 0 ? 1 : items.Max(o => o.ToDoItemId) + 1;
+            // items.Add(item);
+            context.ToDoItems.Add(item);
+            context.SaveChanges();
         }
+
         catch (Exception ex)
         {
             return Problem(ex.Message, null, StatusCodes.Status500InternalServerError); //500
