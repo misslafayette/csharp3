@@ -1,4 +1,6 @@
 namespace ToDoList.WebApi.Controllers;
+
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
@@ -49,17 +51,26 @@ public class ToDoItemsController : ControllerBase
         List<ToDoItem> itemsToGet;
         try
         {
-            itemsToGet = items;
+            var readList = context.ToDoItems.ToList();
+            // itemsToGet = items;
+
+            //respond to client
+            return (readList is null)
+            ? NotFound() //404
+            : Ok(readList.Select(ToDoItemGetResponseDto.FromDomain)); //200
+
+            //tento kod bol až pod catch, ale kričalo to na mňa, že readList neexistuje v tom kontexte.
+            // skusala som ten var readList iniciovať pred tým try, ale potrebovalo to hodnotu,
+            // a var mi tam ako null nechcelo nijako zobrať. trošku som sa v tom pohrabkala online,
+            // a zistila som, že by som to mohla iniciovať napríklad ako object readList = null;
+            // ale tie return funkcie sa potom nekamarátili s tým object, tak som nakoniec presunula
+            // iba tento return co bol pod catch do tohto try - je to tak v pohode? vyriešilo mi to
+            // tie errory čo tu na mňa vyskakovali, ale neviem či je tá logika za tým dobrá
         }
         catch (Exception ex)
         {
             return Problem(ex.Message, null, StatusCodes.Status500InternalServerError); //500
         }
-
-        //respond to client
-        return (itemsToGet is null)
-            ? NotFound() //404
-            : Ok(itemsToGet.Select(ToDoItemGetResponseDto.FromDomain)); //200
     }
 
     [HttpGet("{toDoItemId:int}")]
