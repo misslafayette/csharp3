@@ -48,7 +48,7 @@ public class ToDoItemsController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<ToDoItemGetResponseDto>> Read()
     {
-        List<ToDoItem> itemsToGet;
+        List<ToDoItem> itemsToGet; //ted je tady tohle k nicemu, museme smazat
         try
         {
             var readList = context.ToDoItems.ToList();
@@ -66,6 +66,14 @@ public class ToDoItemsController : ControllerBase
             // ale tie return funkcie sa potom nekamarátili s tým object, tak som nakoniec presunula
             // iba tento return co bol pod catch do tohto try - je to tak v pohode? vyriešilo mi to
             // tie errory čo tu na mňa vyskakovali, ale neviem či je tá logika za tým dobrá
+
+            /*
+            za mě je tato logika v pohode, naprogramoval bych to stejne :) a k tomu co pises
+
+            Melo by stacit deklarovat  List<ToDoItem> readList; - tak jak mas ted itemsToGet. Pak by ten return mel jit pod catch block.
+            Pokud ti to hazelo nejake errory, obcas pomuze dat dotnet clean a dotnet build - Visual Studio Code podle me obcas ingoruje zmeny v souborech
+            a tvari se ze nejsou.
+            */
         }
         catch (Exception ex)
         {
@@ -109,12 +117,13 @@ public class ToDoItemsController : ControllerBase
 
             if (itemToUpdate == null)
             {
-            return NotFound(); // 404
+                return NotFound(); // 404
             }
 
             //updatedItem.ToDoItemId = toDoItemId;
             //items[itemIndexToUpdate] = updatedItem;
 
+            //muze to byt i takto :) dalsi zpusob by byl pres context.ToDoItems.Update metodu (pisu jen pro zajimavost)
             itemToUpdate.Name = request.Name;
             itemToUpdate.Description = request.Description;
             itemToUpdate.IsCompleted = request.IsCompleted;
