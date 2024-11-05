@@ -22,5 +22,7 @@ public class GetTests
         // Assert
         Assert.True(resultResult is OkObjectResult);
         Assert.IsType<OkObjectResult>(resultResult);
+
+        //chtelo by to zkontrolovat ze to navrati kolekci ToDoItems :) ale tohle je dobry Unit test ciste na chovani kontroleru
     }
 }

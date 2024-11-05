@@ -20,6 +20,8 @@ public class DeleteTests
         // Assert
         Assert.IsType<NoContentResult>(result);
         Assert.Empty(ToDoItemsController.items);
+
+        //dle meho nazoru by bylo lepsi mit v items vice nez jeden ToDoItem, at se zkontroluje ze se smaze pouze jeden dany ukol - mohlo by to napriklad mazat vsechny ukoly
     }
 
     [Fact]
