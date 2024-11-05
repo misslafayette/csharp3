@@ -16,4 +16,29 @@ public class ToDoItemsRepository : IRepository<ToDoItem>
         context.ToDoItems.Add(item);
         context.SaveChanges();
     }
+    public IEnumerable<ToDoItem> ReadAll()
+    {
+        return context.ToDoItems.ToList();
+    }
+
+    public ToDoItem? ReadById(int id)
+    {
+        return context.ToDoItems.Find(id);
+    }
+
+    public void Update(ToDoItem item)
+    {
+        context.ToDoItems.Update(item);
+        context.SaveChanges();
+    }
+
+    public void Delete(int id)
+    {
+        var itemToDelete = context.ToDoItems.Find(id);
+        if (itemToDelete != null)
+        {
+            context.ToDoItems.Remove(itemToDelete);
+            context.SaveChanges();
+        }
+    }
 }

@@ -68,31 +68,26 @@ public class ToDoItemsController : ControllerBase
     [HttpGet("{toDoItemId:int}")]
     public ActionResult<ToDoItemGetResponseDto> ReadById(int toDoItemId)
     {
-        ToDoItem? itemToGet;
         try
         {
-            itemToGet = context.ToDoItems.Find(toDoItemId);
-            itemToGet = context.ToDoItems.Find(toDoItemId);
+            var itemToGet = repository.ReadById(toDoItemId);
+
+            return (itemToGet is null)
+            ? NotFound()
+            : Ok(ToDoItemGetResponseDto.FromDomain(itemToGet));
         }
         catch (Exception ex)
         {
             return Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
         }
-
-        return (itemToGet is null)
-            ? NotFound()
-            : Ok(ToDoItemGetResponseDto.FromDomain(itemToGet));
     }
 
     [HttpPut("{toDoItemId:int}")]
     public IActionResult UpdateById(int toDoItemId, [FromBody] ToDoItemUpdateRequestDto request)
     {
-        var updatedItem = request.ToDomain();
-        updatedItem.ToDoItemId = toDoItemId;
-
         try
         {
-            var itemToUpdate = context.ToDoItems.Find(toDoItemId);
+            var itemToUpdate = repository.ReadById(toDoItemId);
 
             if (itemToUpdate == null)
             {
@@ -102,7 +97,8 @@ public class ToDoItemsController : ControllerBase
             itemToUpdate.Name = request.Name;
             itemToUpdate.Description = request.Description;
             itemToUpdate.IsCompleted = request.IsCompleted;
-            context.SaveChanges();
+
+            repository.Update(itemToUpdate);
         }
         catch (Exception ex)
         {
@@ -117,14 +113,14 @@ public class ToDoItemsController : ControllerBase
     {
         try
         {
-            var itemToDelete = context.ToDoItems.Find(toDoItemId);
+            var itemToDelete = repository.ReadById(toDoItemId);
 
             if (itemToDelete is null)
             {
                 return NotFound();
             }
-            context.ToDoItems.Remove(itemToDelete);
-            context.SaveChanges();
+
+            repository.Delete(toDoItemId);
         }
         catch (Exception ex)
         {
