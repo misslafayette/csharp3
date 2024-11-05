@@ -12,7 +12,8 @@ public class UpdateTests
     {
         // Arrange
         var controller = new ToDoItemsController();
-        var existingItem = new ToDoItem { ToDoItemId = 1, Name = "Old Task", Description = "Old Description", IsCompleted = false }; ToDoItemsController.items.Add(existingItem);
+        var existingItem = new ToDoItem { ToDoItemId = 1, Name = "Old Task", Description = "Old Description", IsCompleted = false };
+        ToDoItemsController.items.Add(existingItem); //co radek to prikaz, nedavat na jeden radek vicero prikazu - kompiler to zvladne ale spatne se to cte
         var updatedItem = new ToDoItemUpdateRequestDto("Updated Task", "Updated Description", true);
 
         // Act
@@ -20,9 +21,9 @@ public class UpdateTests
 
         // Assert
         Assert.IsType<NoContentResult>(result);
-        Assert.Equal("Updated Task", ToDoItemsController.items[0].Name);
-        Assert.Equal("Updated Description", ToDoItemsController.items[0].Description);
-        Assert.True(ToDoItemsController.items[0].IsCompleted);
+        Assert.Equal("Updated Task", ToDoItemsController.items[0].Name); //opet radeji pres updatedItem.Name
+        Assert.Equal("Updated Description", ToDoItemsController.items[0].Description); //opet radeji pres updatedItem.Description
+        Assert.True(ToDoItemsController.items[0].IsCompleted); //opet kontrola pres updatedItem.IsCompleted
     }
 
     [Fact]

@@ -5,7 +5,7 @@ using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.WebApi.Controllers;
 
-public class ReadByIdTests
+public class ReadByIdTests //nazev souboru je "Read By Id Test.cs" - radeji bez mezer :)
 {
     [Fact]
     public void ReadById_ExistingId_ReturnsItem()
@@ -22,7 +22,7 @@ public class ReadByIdTests
         var okResult = Assert.IsType<OkObjectResult>(result.Result);
         var item = Assert.IsType<ToDoItemGetResponseDto>(okResult.Value);
         Assert.Equal(1, item.Id);
-        Assert.Equal("Sample Task", item.Name);
+        Assert.Equal("Sample Task", item.Name); //opet radeji ne hardcoded, ale pres toDoItem.Name
 
     }
 
