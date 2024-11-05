@@ -4,14 +4,13 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
-using ToDoList.Persistence;
+
 
 [ApiController]
 [Route("api/[controller]")]
 public class ToDoItemsController : ControllerBase
 {
     public static readonly List<ToDoItem> items = [];
-
 
     [HttpPost]
     public ActionResult<ToDoItemGetResponseDto> Create(ToDoItemCreateRequestDto request)
@@ -43,15 +42,15 @@ public class ToDoItemsController : ControllerBase
         try
         {
             itemsToGet = items;
-
-            return (readList is null)
-            ? NotFound()
-            : Ok(readList.Select(ToDoItemGetResponseDto.FromDomain));
         }
         catch (Exception ex)
         {
             return Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
         }
+
+        return (itemsToGet is null)
+            ? NotFound()
+            : Ok(itemsToGet.Select(ToDoItemGetResponseDto.FromDomain));
     }
 
     [HttpGet("{toDoItemId:int}")]
@@ -81,15 +80,10 @@ public class ToDoItemsController : ControllerBase
         {
             var itemIndexToUpdate = items.FindIndex(i => i.ToDoItemId == toDoItemId);
 
-            if (itemToUpdate == null)
+            if (itemIndexToUpdate == -1)
             {
                 return NotFound();
             }
-
-            itemToUpdate.Name = request.Name;
-            itemToUpdate.Description = request.Description;
-            itemToUpdate.IsCompleted = request.IsCompleted;
-            context.SaveChanges();
         }
         catch (Exception ex)
         {
