@@ -1,6 +1,6 @@
-using ToDoList.Domain.Models;
 using ToDoList.Persistence;
 using ToDoList.Persistence.Repositories;
+using ToDoList.Domain.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 {

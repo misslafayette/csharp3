@@ -24,6 +24,7 @@ namespace ToDoList.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsCompleted")

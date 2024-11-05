@@ -6,6 +6,8 @@ using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence;
 using ToDoList.Persistence.Repositories;
+using ToDoList.Persistence;
+using ToDoList.Persistence.Repositories;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -32,6 +34,7 @@ public class ToDoItemsController : ControllerBase
         var item = request.ToDomain();
         try
         {
+            repository.Create(item);
             repository.Create(item);
         }
 
@@ -69,6 +72,7 @@ public class ToDoItemsController : ControllerBase
         try
         {
             itemToGet = context.ToDoItems.Find(toDoItemId);
+            itemToGet = context.ToDoItems.Find(toDoItemId);
         }
         catch (Exception ex)
         {
@@ -84,6 +88,7 @@ public class ToDoItemsController : ControllerBase
     public IActionResult UpdateById(int toDoItemId, [FromBody] ToDoItemUpdateRequestDto request)
     {
         var updatedItem = request.ToDomain();
+        updatedItem.ToDoItemId = toDoItemId;
 
         try
         {
