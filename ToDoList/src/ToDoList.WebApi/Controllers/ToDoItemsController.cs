@@ -13,16 +13,19 @@ using ToDoList.Persistence.Repositories;
 [Route("api/[controller]")]
 public class ToDoItemsController : ControllerBase
 {
-    public static readonly List<ToDoItem> items = [];
+    public static readonly List<ToDoItem> items = []; //uz zde nechceme pracovat se statickym listem, muzeme smazat
 
-    private readonly ToDoItemsContext context;
+    private readonly ToDoItemsContext context; //uz zde nechceme pracovat s context, na to mame repository, muzeme smazat
     private readonly IRepository<ToDoItem> repository;
-    public ToDoItemsController(ToDoItemsContext context, IRepository<ToDoItem> repository)
+
+    //staci nam pouze ten druhy konstruktor, uz nechceme tady nechceme pracovat s context
+    //zaroven pokud ted mame 2 konstruktory tak pokud spustime nasi web API a posleme nejaky HTTP request, tak nam vyskoci exception
+    /*public ToDoItemsController(ToDoItemsContext context, IRepository<ToDoItem> repository)
     {
         this.context = context;
         this.repository = repository;
     }
-
+*/
     public ToDoItemsController(IRepository<ToDoItem> repository)
     {
         this.repository = repository;
@@ -34,6 +37,7 @@ public class ToDoItemsController : ControllerBase
         var item = request.ToDomain();
         try
         {
+            //kazdy ukol se prida dvakrat, nevim jak ty, ale cim mene ukolu tim lepe a jeste lepsi kdyz je nemam duplikovane :)
             repository.Create(item);
             repository.Create(item);
         }
@@ -54,7 +58,7 @@ public class ToDoItemsController : ControllerBase
     {
         try
         {
-            var readList = context.ToDoItems.ToList();
+            var readList = context.ToDoItems.ToList(); //proc tady pracujeme s context? chceme pracovat s repository ne? Cilem bylo se toho zbavit :)
             return (readList is null)
             ? NotFound()
             : Ok(readList.Select(ToDoItemGetResponseDto.FromDomain));
