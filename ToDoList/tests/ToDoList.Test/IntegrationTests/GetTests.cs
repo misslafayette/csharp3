@@ -2,7 +2,9 @@ namespace ToDoList.Test;
 
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.Models;
+using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Controllers;
+using ToDoList.Persistence;
 
 public class GetTests
 {
@@ -10,15 +12,18 @@ public class GetTests
     public void Get_AllItems_ReturnsAllItems()
     {
         // Arrange
-        var controller = new ToDoItemsController();
+        var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
+
         var toDoItem = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno",
             Description = "Popis",
             IsCompleted = false
         };
-        ToDoItemsController.items.Add(toDoItem);
+        context.ToDoItems.Add(toDoItem);
+        context.SaveChanges();
 
         // Act
         var result = controller.Read();

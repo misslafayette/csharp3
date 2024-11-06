@@ -12,7 +12,7 @@ public class GetByIdTests
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(context, null); // Docasny hack, nez z controlleru odstranime context.
+        var controller = new ToDoItemsController(null); // Docasny hack, nez z controlleru odstranime context.
         var toDoItem = new ToDoItem
         {
             Name = "Jmeno",
@@ -42,7 +42,7 @@ public class GetByIdTests
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(context, null); // Docasny hack, nez z controlleru odstranime context.
+        var controller = new ToDoItemsController(null);
 
         var toDoItem = new ToDoItem
         {

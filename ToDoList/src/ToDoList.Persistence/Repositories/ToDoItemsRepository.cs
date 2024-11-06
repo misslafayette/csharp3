@@ -35,13 +35,7 @@ public class ToDoItemsRepository : IRepository<ToDoItem>
     public void Delete(int id)
     {
         var itemToDelete = context.ToDoItems.Find(id);
-        if (itemToDelete != null) //tato kontrola uz probiha v kontroleru
-        {
-            context.ToDoItems.Remove(itemToDelete);
-            context.SaveChanges();
-        }
-
-        //obecne nevadi zde provadet kontrolu zda muzeme smazat ukol, ALE kdyz se ted podivas na ostatni metody ToDoItemsRepository, tak je to lehce schizofreni :)
-        //Update napriklad kontrolu neprovadi a Delete ano? Bud obe metody si tady to budou kontrolovat, anebo ani jedna a kontrola probehne v kontroleru.
+        context.ToDoItems.Remove(itemToDelete);
+        context.SaveChanges();
     }
 }
