@@ -8,7 +8,7 @@ using ToDoList.Persistence.Repositories;
 using ToDoList.Domain.Models;
 using Microsoft.AspNetCore.Http;
 
-public class DeleteByIdTests
+public class DeleteByIdUnitTests
 {
     [Fact]
     public void Delete_ValidItemId_ReturnsNoContent()
@@ -32,5 +32,23 @@ public class DeleteByIdTests
 
         // Assert
         Assert.IsType<NoContentResult>(result);
+    }
+
+    [Fact]
+    public void Delete_DeleteByIdInvalidItemId_ReturnsNotFound()
+    {
+        // Arrange
+        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var controller = new ToDoItemsController(repositoryMock);
+        repositoryMock.ReadById(Arg.Any<int>()).Returns((ToDoItem)null);
+
+        // Act
+        var result = controller.DeleteById(1);
+        var resultResult = result as NotFoundResult;
+
+        // Assert
+        Assert.IsType<NotFoundResult>(resultResult);
+        repositoryMock.Received(1).ReadById(1);
+        repositoryMock.DidNotReceive().Delete(Arg.Any<int>());
     }
 }
