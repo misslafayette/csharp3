@@ -26,15 +26,15 @@ public class GetByIdUnitTests
             ToDoItemId = 1
         };
 
-        repositoryMock.ReadById(Arg.Any<int>()).Returns(toDoItem);
+        repositoryMock.ReadById(Arg.Any<int>()).Returns(toDoItem); //opet bychom mohli specifikovat ze to navrati pouze pro id = toDoItem.ToDoItemId
 
         // Act
-        var result = controller.Read();
+        var result = controller.Read(); //testujeme ReadById, ne Read
         var resultResult = result.Result;
 
         // Assert
         Assert.IsType<OkObjectResult>(resultResult);
-        repositoryMock.Received(1).ReadAll();
+        repositoryMock.Received(1).ReadAll(); //testujeme ReadById, ne Read
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class GetByIdUnitTests
 
         // Assert
         Assert.IsType<ObjectResult>(resultResult);
-        repositoryMock.Received(1).ReadById(1);
+        repositoryMock.Received(1).ReadById(1); //nemusime hardcodit, muzeme pouzit toDoItem.ToDoItemId
         Assert.Equivalent(new StatusCodeResult(StatusCodes.Status500InternalServerError), resultResult);
     }
 

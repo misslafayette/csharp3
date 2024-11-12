@@ -1,4 +1,4 @@
-namespace ToDoList.Test;
+namespace ToDoList.Test.UnitTests; //upravil jsem namespace aby vsechny testy byly v jednom
 
 using NSubstitute;
 using Microsoft.AspNetCore.Mvc;
@@ -25,13 +25,14 @@ public class DeleteByIdUnitTests
             ToDoItemId = 1
         };
 
-        repositoryMock.ReadById(Arg.Any<int>()).Returns(toDoItem);
+        repositoryMock.ReadById(Arg.Any<int>()).Returns(toDoItem); //mohli bychom specifikovat ze toDoItem navrati pouze pro ReadById(toDoItem.ToDoItemId)
 
         // Act
         var result = controller.DeleteById(toDoItem.ToDoItemId);
 
         // Assert
         Assert.IsType<NoContentResult>(result);
+        //chtelo by to kontrolu kolikrat se zavolalo DeleteById
     }
 
     [Fact]
@@ -49,6 +50,6 @@ public class DeleteByIdUnitTests
         // Assert
         Assert.IsType<NotFoundResult>(resultResult);
         repositoryMock.Received(1).ReadById(1);
-        repositoryMock.DidNotReceive().Delete(Arg.Any<int>());
+        repositoryMock.DidNotReceive().Delete(Arg.Any<int>()); //krasa :)
     }
 }

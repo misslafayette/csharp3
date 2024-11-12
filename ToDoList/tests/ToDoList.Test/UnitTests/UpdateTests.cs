@@ -42,6 +42,7 @@ public class UpdateUnitTests
 
         // Assert
         Assert.IsType<NoContentResult>(result);
+        //chtelo by to kontrolu zda se zavolal Update v mocku se spravnym argumentem - ze jsme napriklad neupdatovali uplne jiny ukol
     }
 
     [Fact]

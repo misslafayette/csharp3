@@ -1,4 +1,4 @@
-namespace ToDoList.Test;
+namespace ToDoList.Test.UnitTests; //upravil jsem namespace aby vsechny testy byly v jednom
 
 using NSubstitute;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +34,8 @@ public class PostUnitTests
         Assert.Equal(request.Description, value.Description);
         Assert.Equal(request.IsCompleted, value.IsCompleted);
         Assert.Equal(request.Name, value.Name);
+
+        //chtelo by to kontrolu ze se zavolala metoda Create v mocku a zavolala se prave jednou (kontrola zda se vytvori pouze jeden ukol v databazi)
     }
 
     [Fact]

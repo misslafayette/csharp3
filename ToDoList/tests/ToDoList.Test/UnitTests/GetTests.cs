@@ -31,7 +31,7 @@ public class GetUnitTests
                     IsCompleted = false
                 }
             ]
-            );
+            ); //ten IEnumerable bychom si mohli nachystat nad mockem abychom s nim mohli pracovat
 
         // Act
         var result = controller.Read();
@@ -40,6 +40,7 @@ public class GetUnitTests
         // Assert
         Assert.IsType<OkObjectResult>(resultResult);
         repositoryMock.Received(1).ReadAll();
+        //chtelo by to check ze jsme opravdu dostali IEnumerable a ze ma tolik objektu jako nas predpripraveny IEnumerable co jsme davali do mocku
     }
 
     [Fact]
