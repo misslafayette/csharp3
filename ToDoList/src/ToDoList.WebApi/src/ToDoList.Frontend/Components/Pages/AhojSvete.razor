@@ -1,0 +1,33 @@
+﻿@page "/AhojSvete"
+
+<PageTitle>@title</PageTitle>
+
+<h1>@ahojSvet</h1>
+
+@Pozdrav()
+
+Piseme nieco <br>
+Piseme zase nieco.
+@PozdravOpakuj(10)
+
+
+@code
+{
+    string title = "Nas Title";
+    string ahojSvet = "Ahoj svet z inej stránky!";
+
+    string Pozdrav()
+    {
+        return "Vitaj v mojej aplikácii.";
+    }
+
+    string PozdravOpakuj(int n)
+    {
+        string coNapisat = "";
+        for(int i = 0; i < n ; i++)
+        {
+            coNapisat += $"Pozdrav {i}\n";
+        }
+        return coNapisat;
+    }
+}

@@ -1,0 +1,26 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<Dashboard/>
+
+<h1>@ahojSvet</h1>
+
+Vitaj v mojej aplikácii.
+
+<button @onclick="Increment">Moje tlacitko</button>
+
+<br>
+Hodnota počítadla: @counter;
+
+@code
+{
+    string ahojSvet = "Ahoj svet ešte raz!";
+
+    int counter = 0;
+
+    public void Increment(){
+        counter++;
+    }
+}
