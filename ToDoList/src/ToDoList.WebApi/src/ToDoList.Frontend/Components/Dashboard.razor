@@ -3,16 +3,15 @@
 <h1>Dashboard</h1>
 
 <table>
-    <tr>
-        <td><button @onclick="OrderById">Zoradiť podľa ID</button></td>
-        <td><button @onclick="OrderByName">Zoradiť podľa mena</button></td>
-        <td><button>Zoradiť podľa statusu</button></td>
-        <td><button>Zoradiť podľa popisu</button></td>
-    </tr>
+
 
 </table>
 
 <table>
+    <tr>
+        <td><button @onclick="OrderById">Zoradiť podľa ID</button></td>
+        <td><button @onclick="OrderByName">Zoradiť podľa mena</button></td>
+    </tr>
     @foreach(var toDoItem in toDoItems)
     {
         <tr>
