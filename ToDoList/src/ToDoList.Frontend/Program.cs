@@ -4,7 +4,6 @@ using ToDoList.Frontend.Components;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents(); //tohle muzeme smazat, staci nam radek 7 :)
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 builder.Services.AddScoped(sp => new HttpClient{ BaseAddress = new Uri("http://localhost:5000")});

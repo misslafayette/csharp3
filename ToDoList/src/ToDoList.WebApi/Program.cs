@@ -1,6 +1,7 @@
 using ToDoList.Persistence;
 using ToDoList.Persistence.Repositories;
 using ToDoList.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -11,7 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddSwaggerGen();
 
     //Persistence services
-    builder.Services.AddDbContext<ToDoItemsContext>();
+    builder.Services.AddDbContext<ToDoItemsContext>(options =>
+        options.UseSqlite("Data Source=localdb.db"));
     builder.Services.AddScoped<IRepository<ToDoItem>, ToDoItemsRepository>();
 }
 

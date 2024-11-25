@@ -14,8 +14,18 @@ public class ToDoItemsContext : DbContext
 
     public DbSet<ToDoItem> ToDoItems { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite(connectionString);
+    }*/
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+{
+    if (!optionsBuilder.IsConfigured)
+    {
+        optionsBuilder.UseSqlite("Data Source=../../data/localdb.db");
     }
+}
+
+    public ToDoItemsContext() { }
 }

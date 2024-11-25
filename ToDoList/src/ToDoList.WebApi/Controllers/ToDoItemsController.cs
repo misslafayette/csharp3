@@ -87,6 +87,7 @@ public class ToDoItemsController : ControllerBase
             itemToUpdate.Name = request.Name;
             itemToUpdate.Description = request.Description;
             itemToUpdate.IsCompleted = request.IsCompleted;
+            itemToUpdate.Category = request.Category;
 
             repository.Update(itemToUpdate);
         }
