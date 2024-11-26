@@ -1,8 +1,6 @@
-﻿namespace ToDoList.Persistence;
-
+﻿﻿namespace ToDoList.Persistence;
 using Microsoft.EntityFrameworkCore;
 using ToDoList.Domain.Models;
-
 public class ToDoItemsContext : DbContext
 {
     private readonly string connectionString;
@@ -11,21 +9,9 @@ public class ToDoItemsContext : DbContext
         this.connectionString = connectionString;
         this.Database.Migrate();
     }
-
     public DbSet<ToDoItem> ToDoItems { get; set; }
-
-    /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite(connectionString);
-    }*/
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-{
-    if (!optionsBuilder.IsConfigured)
-    {
-        optionsBuilder.UseSqlite("Data Source=../../data/localdb.db");
     }
-}
-
-    public ToDoItemsContext() { }
 }
