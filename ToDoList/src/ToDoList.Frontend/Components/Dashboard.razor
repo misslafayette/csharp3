@@ -1,16 +1,20 @@
 ﻿@using ToDoList.Frontend.Clients
 @using ToDoList.Frontend.Views
 @inject IToDoItemsClient ToDoItemsClient
+@inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
 <h1>Dashboard</h1>
 
-<table>
-    <tr>
-        <td><button @onclick="OrderById">Zoradiť podľa ID</button></td>
-        <td><button @onclick="OrderByName">Zoradiť podľa mena</button></td>
-    </tr>
-
+<table class="table table-hover mt-3">
+    <thead class="table-dark">
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Completed</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
     @if (toDoItems is null)
     {
         <p>Nacitam...</p>
@@ -20,15 +24,21 @@
     {
         @foreach (var toDoItem in toDoItems)
         {
-            <tr>
+            <tr class=@TypeOfRowBasedOnToDoItemState(toDoItem.IsCompleted)>
                 <td>@toDoItem.ToDoItemId</td>
                 <td>@toDoItem.Name</td>
                 <td>@toDoItem.Description</td>
                 <td>@toDoItem.IsCompleted</td>
+                <td><button class="btn btn-success" @onclick="()=> EditItem(toDoItem)">Edit</button></td>
             </tr>
         }
     }
+    </tbody>
 </table>
+
+
+        <th><button class="btn btn-success" @onclick="OrderById">Zoradiť podľa ID</button></th>
+        <th><button class="btn btn-success" @onclick="OrderByName">Zoradiť podľa mena</button></th>
 
 @code
 {
@@ -37,6 +47,11 @@
         toDoItems = await ToDoItemsClient.ReadItemsAsync();
     }
     private List<ToDoItemView> toDoItems;
+
+    private string TypeOfRowBasedOnToDoItemState(bool IsCompleted)
+    {
+        return IsCompleted? "table-success":"table-danger";
+    }
 
     public void OrderById()
     {
@@ -48,4 +63,8 @@
         toDoItems = toDoItems?.OrderBy(uloha => uloha.Name).ToList();
     }
 
+    public void EditItem(ToDoItemView toDoItem)
+    {
+        NavigationManager.NavigateTo($"editToDoItem/{toDoItem.ToDoItemId}");
+    }
 }
