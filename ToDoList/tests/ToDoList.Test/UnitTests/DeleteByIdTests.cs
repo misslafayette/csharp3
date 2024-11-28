@@ -11,10 +11,10 @@ using Microsoft.AspNetCore.Http;
 public class DeleteByIdUnitTests
 {
     [Fact]
-    public void Delete_ValidItemId_ReturnsNoContent()
+    public async Task Delete_ValidItemId_ReturnsNoContent()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
         var toDoItem = new ToDoItem
@@ -22,33 +22,35 @@ public class DeleteByIdUnitTests
             Name = "testItem",
             Description = "testDescription",
             IsCompleted = false,
-            ToDoItemId = 1
+            ToDoItemId = 1,
+            Category = "testCategory"
         };
 
-        repositoryMock.ReadById(Arg.Any<int>()).Returns(toDoItem);
+        repositoryMock.ReadByIdAsync(Arg.Any<int>()).Returns(toDoItem);
 
         // Act
-        var result = controller.DeleteById(toDoItem.ToDoItemId);
+        var result = await controller.DeleteByIdAsync(toDoItem.ToDoItemId);
 
         // Assert
         Assert.IsType<NoContentResult>(result);
+        await repositoryMock.Received(1).DeleteAsync(toDoItem.ToDoItemId);
     }
 
     [Fact]
-    public void Delete_DeleteByIdInvalidItemId_ReturnsNotFound()
+    public async Task Delete_DeleteByIdInvalidItemId_ReturnsNotFound()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
-        repositoryMock.ReadById(Arg.Any<int>()).Returns((ToDoItem)null);
+        repositoryMock.ReadByIdAsync(Arg.Any<int>()).Returns((ToDoItem)null);
 
         // Act
-        var result = controller.DeleteById(1);
+        var result = await controller.DeleteByIdAsync(1);
         var resultResult = result as NotFoundResult;
 
         // Assert
         Assert.IsType<NotFoundResult>(resultResult);
-        repositoryMock.Received(1).ReadById(1);
-        repositoryMock.DidNotReceive().Delete(Arg.Any<int>());
+        await repositoryMock.Received(1).ReadByIdAsync(1);
+        await repositoryMock.DidNotReceive().DeleteAsync(Arg.Any<int>());
     }
 }

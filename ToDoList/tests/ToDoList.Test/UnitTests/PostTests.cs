@@ -11,19 +11,20 @@ using Microsoft.AspNetCore.Http;
 public class PostUnitTests
 {
     [Fact]
-    public void Post_ValidRequest_ReturnsNewItem()
+    public async Task Post_ValidRequest_ReturnsNewItem()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
-            IsCompleted: false
+            IsCompleted: false,
+            Category: "Kategoria"
         );
 
         // Act
-        var result = controller.Create(request);
+        var result = await controller.CreateAsync(request);
         var resultResult = result.Result;
         var value = result.GetValue();
 
@@ -34,23 +35,25 @@ public class PostUnitTests
         Assert.Equal(request.Description, value.Description);
         Assert.Equal(request.IsCompleted, value.IsCompleted);
         Assert.Equal(request.Name, value.Name);
+        Assert.Equal(request.Category, value.Category);
     }
 
     [Fact]
-    public void Post_UnhandledException_Returns500()
+    public async Task Post_UnhandledException_Returns500()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
         var request = new ToDoItemCreateRequestDto(
-            Name: "Jmeno",
+            Name: "Meno",
             Description: "Popis",
-            IsCompleted: false
+            IsCompleted: false,
+            Category: "Kategoria"
         );
-        repositoryMock.When(r => r.Create(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
+        repositoryMock.When(r => r.CreateAsync(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
 
         // Act
-        var result = controller.Create(request);
+        var result = await controller.CreateAsync(request);
         var resultResult = result.Result;
 
         // Assert
