@@ -6,7 +6,7 @@
 @rendermode InteractiveServer
 
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Edit To Do Item</PageTitle>
 
 @if (ToDoItem is not null)
 {
@@ -15,7 +15,10 @@
         <label class="form-label" for="Name">Name:</label>
         <InputText id="Name" @bind-Value="ToDoItem.Name"/>
         </div>
+        <label class="form-label" for="Name">Description:</label>
         <InputText id="Description" @bind-Value="ToDoItem.Description"/>
+        <label class="form-label" for="Name">Category:</label>
+        <InputText id="Category" @bind-Value="ToDoItem.Category"/>
         <InputCheckbox id="IsCompleted" @bind-Value="ToDoItem.IsCompleted"/>
         <button type="submit" class="btn btn-primary">Sumbit</button>
     </EditForm>

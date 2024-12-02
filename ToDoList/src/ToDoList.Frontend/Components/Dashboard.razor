@@ -14,6 +14,7 @@
         <th>Name</th>
         <th>Description</th>
         <th>Completed</th>
+        <th>Category</th>
         <th>Actions</th>
     </thead>
     <tbody>
@@ -31,6 +32,7 @@
                 <td>@toDoItem.Name</td>
                 <td>@toDoItem.Description</td>
                 <td>@toDoItem.IsCompleted</td>
+                <td>@toDoItem.Category</td>
                 <td><button class="btn btn-success" @onclick="()=> EditItem(toDoItem)"><i class="fa fa-pencil-square"></i> Edit</button>
                 <button class="btn btn-success" @onclick="()=> CheckboxItem(toDoItem)"><i class="fa fa-check-square"></i> Done</button>
                 <button class="btn btn-danger" @onclick="()=> DeleteItemAsync(toDoItem)"><i class="fa fa-trash"></i> Delete</button></td>
