@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence;
+using ToDoList.Persistence.Migrations;
 using ToDoList.WebApi.Controllers;
 
 public class PutTests
@@ -26,7 +27,8 @@ public class PutTests
         var request = new ToDoItemUpdateRequestDto(
             Name: "Jine jmeno",
             Description: "Jiny popis",
-            IsCompleted: true
+            IsCompleted: true,
+            Category: "Ina kategoria"
         );
 
         // Act
