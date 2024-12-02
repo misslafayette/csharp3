@@ -56,6 +56,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet("{toDoItemId:int}")]
+    [ActionName("ReadByIdAsync")] //viz debata v chatu otazky - je potreba toto jmeno jasne specifikovat
     public async Task<ActionResult<ToDoItemGetResponseDto>> ReadByIdAsync(int toDoItemId)
     {
         try
