@@ -9,7 +9,7 @@ using ToDoList.Persistence;
 public class GetTests
 {
     [Fact]
-    public void Get_AllItems_ReturnsAllItems()
+    public async Task Get_AllItems_ReturnsAllItems()
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
@@ -26,9 +26,9 @@ public class GetTests
         context.SaveChanges();
 
         // Act
-        var result = controller.Read();
+        var result = await controller.ReadAsync();
         var resultResult = result.Result;
-        var value = result.GetValue();
+        var value = result.Value;
 
         // Assert
         Assert.IsType<OkObjectResult>(resultResult);
@@ -39,5 +39,6 @@ public class GetTests
         Assert.Equal(toDoItem.Description, firstItem.Description);
         Assert.Equal(toDoItem.IsCompleted, firstItem.IsCompleted);
         Assert.Equal(toDoItem.Name, firstItem.Name);
+        Assert.Equal(toDoItem.Category, firstItem.Category);
     }
 }

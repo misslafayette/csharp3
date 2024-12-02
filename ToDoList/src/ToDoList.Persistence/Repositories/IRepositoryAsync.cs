@@ -1,6 +1,6 @@
 namespace ToDoList.Persistence.Repositories;
 
-public interface IRepositoryAsync<T> where T : class //chtelo by to aby se trida nazivala stejne jako soubor, cili sobour bych prejmenoval na IRepositoryAsync.cs
+public interface IRepositoryAsync<T> where T : class 
 {
     Task CreateAsync(T item);
     Task<IEnumerable<T>> ReadAllAsync();

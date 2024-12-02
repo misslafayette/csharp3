@@ -9,22 +9,23 @@ using ToDoList.WebApi.Controllers;
 public class PostTests
 {
     [Fact]
-    public void Post_ValidRequest_ReturnsNewItem()
+    public async Task Post_ValidRequest_ReturnsNewItem()
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
         var repository = new ToDoItemsRepository(context);
-        var controller = new ToDoItemsController(repository); // Docasny hack, nez z controlleru odstranime context.
+        var controller = new ToDoItemsController(repository);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
-            IsCompleted: false
+            IsCompleted: false,
+            Category: "Kateória"
         );
 
         // Act
-        var result = controller.Create(request);
+        var result = await controller.CreateAsync(request);
         var resultResult = result.Result;
-        var value = result.GetValue();
+        var value = result.Value;
 
         // Assert
         Assert.IsType<CreatedAtActionResult>(resultResult);
@@ -33,5 +34,6 @@ public class PostTests
         Assert.Equal(request.Description, value.Description);
         Assert.Equal(request.IsCompleted, value.IsCompleted);
         Assert.Equal(request.Name, value.Name);
+        Assert.Equal(request.Category, value.Category);
     }
 }

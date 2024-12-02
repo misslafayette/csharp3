@@ -3,29 +3,32 @@ namespace ToDoList.Test.IntegrationTests;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence;
+using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Controllers;
 
 public class GetByIdTests
 {
     [Fact]
-    public void GetById_ValidId_ReturnsItem()
+    public async Task GetById_ValidId_ReturnsItem()
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(null); // Docasny hack, nez z controlleru odstranime context.
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
         var toDoItem = new ToDoItem
         {
             Name = "Jmeno",
             Description = "Popis",
-            IsCompleted = false
+            IsCompleted = false,
+            Category = "Kategória"
         };
         context.ToDoItems.Add(toDoItem);
         context.SaveChanges();
 
         // Act
-        var result = controller.ReadById(toDoItem.ToDoItemId);
+        var result = await controller.ReadByIdAsync(toDoItem.ToDoItemId);
         var resultResult = result.Result;
-        var value = result.GetValue();
+        var value = result.Value;
 
         // Assert
         Assert.IsType<OkObjectResult>(resultResult);
@@ -35,14 +38,16 @@ public class GetByIdTests
         Assert.Equal(toDoItem.Description, value.Description);
         Assert.Equal(toDoItem.IsCompleted, value.IsCompleted);
         Assert.Equal(toDoItem.Name, value.Name);
+        Assert.Equal(toDoItem.Category, value.Category);
     }
 
     [Fact]
-    public void GetById_InvalidId_ReturnsNotFound()
+    public async Task GetById_InvalidId_ReturnsNotFound()
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(null);
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
 
         var toDoItem = new ToDoItem
         {
@@ -55,7 +60,7 @@ public class GetByIdTests
 
         // Act
         var invalidId = -1;
-        var result = controller.ReadById(invalidId);
+        var result = await controller.ReadByIdAsync(invalidId);
         var resultResult = result.Result;
 
         // Assert
