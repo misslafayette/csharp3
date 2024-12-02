@@ -40,7 +40,7 @@ public class UpdateUnitTests
         repositoryMock.ReadByIdAsync(toDoItemId).Returns(existingItem);
 
         // Act
-        var result = controller.UpdateByIdAsync(toDoItemId, updateRequest);
+        var result = await controller.UpdateByIdAsync(toDoItemId, updateRequest);
 
         // Assert
         Assert.IsType<NoContentResult>(result);
@@ -63,13 +63,13 @@ public class UpdateUnitTests
         );
 
         // Act
-        var result = controller.UpdateByIdAsync(1, updateRequest);
+        var result = await controller.UpdateByIdAsync(1, updateRequest);
         // var resultResult = result as NotFoundResult;
 
         // Assert
         Assert.IsType<NotFoundResult>(result);
-        repositoryMock.Received(1).ReadByIdAsync(1);
-        repositoryMock.DidNotReceive().UpdateAsync(Arg.Any<ToDoItem>());
+        await repositoryMock.Received(1).ReadByIdAsync(1);
+        await repositoryMock.DidNotReceive().UpdateAsync(Arg.Any<ToDoItem>());
     }
 
     [Fact]
@@ -100,11 +100,11 @@ public class UpdateUnitTests
         );
 
         // Act
-        var result = controller.UpdateByIdAsync(toDoItem.ToDoItemId, updateRequest);
+        var result = await controller.UpdateByIdAsync(toDoItem.ToDoItemId, updateRequest);
 
         // Assert
         Assert.IsType<ObjectResult>(result);
-        repositoryMock.Received(1).ReadByIdAsync(toDoItem.ToDoItemId);
+        await repositoryMock.Received(1).ReadByIdAsync(toDoItem.ToDoItemId);
         Assert.Equivalent(new StatusCodeResult(StatusCodes.Status500InternalServerError), result);
     }
 }

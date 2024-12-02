@@ -36,7 +36,8 @@ public class DeleteTests
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(null); // Docasny hack, nez z controlleru odstranime context.
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
         var toDoItem = new ToDoItem
         {
             Name = "Jmeno",

@@ -19,16 +19,18 @@ public class PostTests
             Name: "Jmeno",
             Description: "Popis",
             IsCompleted: false,
-            Category: "Kateória"
+            Category: "Kategória"
         );
 
         // Act
         var result = await controller.CreateAsync(request);
-        var resultResult = result.Result;
-        var value = result.Value;
+        Assert.NotNull(result); // temporary
+
+        var resultResult = Assert.IsType<CreatedAtActionResult>(result.Result);
+        Assert.NotNull(resultResult.Value); //temporary
 
         // Assert
-        Assert.IsType<CreatedAtActionResult>(resultResult);
+        var value = Assert.IsType<ToDoItemGetResponseDto>(result.Value);
         Assert.NotNull(value);
 
         Assert.Equal(request.Description, value.Description);
